@@ -5,35 +5,36 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 public class Paper : MonoBehaviour
 {
-    public GameObject objPaper;
+    public GameObject panelPaper;
     public GameObject paperCube;
+    public GameObject gc;
 
     [SerializeField]
     public bool paper;
     void Start()
     {
-        objPaper.gameObject.SetActive(false);
+        panelPaper.gameObject.SetActive(false);
+        paperCube.gameObject.SetActive(true);
         paper = false;
+        gc.GetComponent<GameController>();
     }
     public void OnTriggerStay(Collider coll)
     {
-        if (coll.tag == "Player" && Input.GetMouseButtonDown(0))
+        if (coll.tag == "Player" && Input.GetMouseButtonDown(0) && paper ==false)
         {
             Debug.Log("Has collision!");
             paper = true;
-            objPaper.SetActive(true);
-
+            panelPaper.SetActive(true);
+            Time.timeScale = 0;
         }
     }
     public void ClosePaper()
     {
-        Debug.Log("CHECK CLOSE PAPER");
-        if (Input.GetMouseButtonDown(0) && paper ==true)
-        {
-            Debug.Log("PRESS LEFT BUTTON MOUSE");
             Destroy(paperCube);
-            objPaper.gameObject.SetActive(false);
-        }
+            Destroy(panelPaper);
+            Time.timeScale = 1;
+            gc.gameObject.GetComponent<GameController>().PegarPapel();
+        
 
     }
 }
